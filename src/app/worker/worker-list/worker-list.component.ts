@@ -20,8 +20,8 @@ export class WorkerListComponent implements OnInit {
   // @ts-ignore
   @ViewChild(MatTable) table: MatTable<any>;
   dataSource= new WorkerDataSource(this.workerSrevice)
-  displayedColumns: string[] = ['id', 'first_name', 'status'];
-  constructor(public dialog: MatDialog, private workerSrevice : WorkerService, private userSrevice : UserService) { }
+  displayedColumns: string[] = ['id', 'first_name', 'status','actions'];
+  constructor(public dialog: MatDialog, private workerSrevice : WorkerService) { }
 
   ngOnInit() {
 
@@ -38,12 +38,22 @@ export class WorkerListComponent implements OnInit {
       console.log('The dialog was closed');
       row = result;
       if (row.id === 0){
-        this.workerSrevice.addWorker(row)
-        this.dataSource.connect()
-        this.table.renderRows();
+        this.workerSrevice.addWorker(row).subscribe(()=>{
+          this.dataSource.connect().subscribe(()=>{
+            this.table.renderRows();
+          });
 
+        })
       }
     });
+  }
+
+  deleteWorker(element: string) {
+    this.workerSrevice.deleteWorker(element)
+  }
+
+  editWorker(element: any) {
+
   }
 }
 
@@ -52,9 +62,7 @@ export class WorkerDataSource extends DataSource<any> {
     super();
   }
   connect(): Observable<ShiftWorker[]> {
-    let workers = this.userService.getWorkers();
-    console.log(workers)
-    return workers;
+    return this.userService.getWorkers();
   }
   disconnect() {}
 }

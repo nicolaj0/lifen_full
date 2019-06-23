@@ -11,6 +11,7 @@ import {SharedModule} from "./shared/shared.module";
 import {WorkerService} from "./worker/worker.service";
 import {UserService} from "./services/user.service";
 import {HttpClientModule} from "@angular/common/http";
+import {FlexLayoutModule} from "@angular/flex-layout";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {HttpClientModule} from "@angular/common/http";
   imports: [
     HttpClientModule,
     BrowserModule,
+    FlexLayoutModule,
     AppRoutingModule,
     WorkerModule,
     BrowserAnimationsModule,
