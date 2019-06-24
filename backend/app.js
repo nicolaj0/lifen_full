@@ -36,7 +36,7 @@ app.delete("/api/workers/:id",(req, res, next) => {
   console.log(req.params.id)
   Worker.deleteOne({_id : req.params.id}).then(result =>{
     console.log(result)
-    result.status(200).json({message : "post deleted"});
+    res.status(200).json({message : "post deleted"});
 
   })
 })

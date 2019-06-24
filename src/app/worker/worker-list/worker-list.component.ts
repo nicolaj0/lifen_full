@@ -19,14 +19,15 @@ import {User, UserService} from "../../services/user.service";
 export class WorkerListComponent implements OnInit {
   // @ts-ignore
   @ViewChild(MatTable) table: MatTable<any>;
-  dataSource= new WorkerDataSource(this.workerSrevice)
+  dataSource= []
   displayedColumns: string[] = ['id', 'first_name', 'status','actions'];
   constructor(public dialog: MatDialog, private workerSrevice : WorkerService) { }
 
   ngOnInit() {
-
+    this.workerSrevice.getWorkers().subscribe(data=>{
+      this.dataSource = data;
+    })
   }
-
 
   openEditModal(row:ShiftWorker): void {
     const dialogRef = this.dialog.open(WorkerEditComponent, {
@@ -35,36 +36,24 @@ export class WorkerListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       row = result;
       if (row.id === 0){
         this.workerSrevice.addWorker(row).subscribe(()=>{
-          this.dataSource.connect().subscribe(()=>{
-            this.table.renderRows();
-          });
-
+          this.ngOnInit()
         })
       }
     });
   }
 
   deleteWorker(element: string) {
-    this.workerSrevice.deleteWorker(element)
+    this.workerSrevice.deleteWorker(element).subscribe(()=>{
+      this.ngOnInit()
+    })
   }
 
   editWorker(element: any) {
 
   }
-}
-
-export class WorkerDataSource extends DataSource<any> {
-  constructor(private userService: WorkerService) {
-    super();
-  }
-  connect(): Observable<ShiftWorker[]> {
-    return this.userService.getWorkers();
-  }
-  disconnect() {}
 }
 
 

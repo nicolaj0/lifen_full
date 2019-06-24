@@ -28,9 +28,7 @@ export class WorkerService {
   }
 
   deleteWorker(workerId : string){
-    this.http.delete('http://localhost:3000/api/workers/' + workerId).subscribe(()=>{
-      console.log("deleted")
-    })
+   return this.http.delete('http://localhost:3000/api/workers/' + workerId)
   }
 
   addWorker(row: ShiftWorker) {
