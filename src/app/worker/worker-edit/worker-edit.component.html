@@ -8,7 +8,7 @@
   <mat-form-field>
     <mat-label>Status</mat-label>
     <mat-select [(ngModel)]="data.status">
-      <mat-option *ngFor="let status of statuses" [value]="status.key">
+      <mat-option *ngFor="let status of statuses" [value]="status.viewValue">
         {{status.viewValue}}
       </mat-option>
     </mat-select>

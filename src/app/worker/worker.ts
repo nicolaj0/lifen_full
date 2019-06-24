@@ -1,5 +1,5 @@
 export interface ShiftWorker {
-  id: number;
+  id: string;
   first_name?: string;
   status?: string;
 }

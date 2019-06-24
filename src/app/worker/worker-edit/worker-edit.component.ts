@@ -1,11 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ShiftWorker} from "../worker";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {Status} from "../status";
 
-interface Status {
-  key: number,
-  viewValue: string
-}
+
 
 @Component({
   selector: 'app-worker-edit',

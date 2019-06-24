@@ -3,38 +3,77 @@ import {from, Observable, of, Subject} from 'rxjs';
 import {ShiftWorker} from "./worker";
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
+import {Status} from "./status";
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkerService {
   private workers: ShiftWorker[];
+  private workersUpdated = new Subject<ShiftWorker[]>();
 
   constructor(private http: HttpClient) {
 
   }
-//
+
+  getStatuses(): Status[] {
+    return [{key: 1, viewValue: 'medic'},
+      {key: 2, viewValue: 'interne'}, {key: 3, viewValue: 'interim'}
+    ];
+  }
+
+  getStatuseText(val: number): string{
+    return this.getStatuses().find(f=>f.key == val).viewValue
+  }
+
   getWorkers() {
-    return this.http.get<any>('http://localhost:3000/api/workers')
-      .pipe(map((woData) =>{
+    this.http.get<any>('http://localhost:3000/api/workers')
+      .pipe(map((woData) => {
         return woData.map(w => {
           return {
-            first_name : w.first_name,
+            first_name: w.first_name,
             status: w.status,
-            id : w._id
+            id: w._id
           }
         })
-      }) )
+      }))
+      .subscribe(transformedPosts => {
+        this.workers = transformedPosts;
+        this.workersUpdated.next([...this.workers]);
+      });
   }
 
-  deleteWorker(workerId : string){
-   return this.http.delete('http://localhost:3000/api/workers/' + workerId)
+  getWorkerUpdateListener() {
+    return this.workersUpdated.asObservable();
   }
 
-  addWorker(row: ShiftWorker) {
-    return this.http.post('http://localhost:3000/api/workers',row)
+
+  deleteWorker(workerId: string) {
+    this.http.delete('http://localhost:3000/api/workers/' + workerId)
+      .subscribe(() => {
+        const updatedPosts = this.workers.filter(worker => worker.id !== workerId);
+        this.workers = updatedPosts;
+        this.workersUpdated.next([...this.workers]);
+      });
+  }
+
+  addWorker(worker: ShiftWorker) {
+    this.http.post<{ message: string, workerId: string }>('http://localhost:3000/api/workers', worker)
+      .subscribe(responseData => {
+        const id = responseData.workerId;
+        worker.id = id;
+        this.workers.push(worker);
+        this.workersUpdated.next([...this.workers]);
+      });
 
 
+  }
 
+  editWorker(row: ShiftWorker) {
+    console.log('efit')
+    this.http.put('http://localhost:3000/api/workers/' + row.id, row)
+      .subscribe(response => console.log(response));
   }
 }
+
+

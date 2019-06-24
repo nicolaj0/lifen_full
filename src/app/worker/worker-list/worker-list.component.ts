@@ -2,11 +2,10 @@ import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {ShiftWorker} from "../worker";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatTable} from "@angular/material";
 import {WorkerEditComponent} from "../worker-edit/worker-edit.component";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {WorkerService} from "../worker.service";
 import {DataSource} from "@angular/cdk/table";
 import {User, UserService} from "../../services/user.service";
-
 
 
 @Component({
@@ -19,41 +18,47 @@ import {User, UserService} from "../../services/user.service";
 export class WorkerListComponent implements OnInit {
   // @ts-ignore
   @ViewChild(MatTable) table: MatTable<any>;
-  dataSource= []
-  displayedColumns: string[] = ['id', 'first_name', 'status','actions'];
-  constructor(public dialog: MatDialog, private workerSrevice : WorkerService) { }
+  dataSource = []
+  displayedColumns: string[] = ['first_name', 'status', 'actions'];
+  private workersSub: Subscription;
 
-  ngOnInit() {
-    this.workerSrevice.getWorkers().subscribe(data=>{
-      this.dataSource = data;
-    })
+  constructor(public dialog: MatDialog, private workerSrevice: WorkerService) {
   }
 
-  openEditModal(row:ShiftWorker): void {
+  ngOnInit() {
+    this.workerSrevice.getWorkers();
+    this.workersSub = this.workerSrevice.getWorkerUpdateListener()
+      .subscribe((workers: ShiftWorker[]) => {
+        this.dataSource = workers;
+      });
+  }
+
+  editWorker(row: ShiftWorker): void {
     const dialogRef = this.dialog.open(WorkerEditComponent, {
       width: '250px',
       data: row
     });
-
     dialogRef.afterClosed().subscribe(result => {
       row = result;
-      if (row.id === 0){
-        this.workerSrevice.addWorker(row).subscribe(()=>{
-          this.ngOnInit()
-        })
-      }
+      this.workerSrevice.editWorker(row);
+    });
+  }
+
+  addWorker(): void {
+    const dialogRef = this.dialog.open(WorkerEditComponent, {
+      width: '250px',
+      data : {}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.workerSrevice.addWorker(result);
     });
   }
 
   deleteWorker(element: string) {
-    this.workerSrevice.deleteWorker(element).subscribe(()=>{
-      this.ngOnInit()
-    })
+    this.workerSrevice.deleteWorker(element)
   }
 
-  editWorker(element: any) {
 
-  }
 }
 
 
