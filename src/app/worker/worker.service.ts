@@ -4,6 +4,9 @@ import {ShiftWorker} from "./worker";
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {Status} from "./status";
+import {environment} from "../../environments/environment";
+
+const BACKEND_URL = environment.apiUrl + "/workers/";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +30,7 @@ export class WorkerService {
   }
 
   getWorkers() {
-    this.http.get<any>('http://localhost:3000/api/workers')
+    this.http.get<any>(BACKEND_URL)
       .pipe(map((woData) => {
         return woData.map(w => {
           return {
@@ -49,7 +52,7 @@ export class WorkerService {
 
 
   deleteWorker(workerId: string) {
-    this.http.delete('http://localhost:3000/api/workers/' + workerId)
+    this.http.delete(BACKEND_URL + workerId)
       .subscribe(() => {
         const updatedPosts = this.workers.filter(worker => worker.id !== workerId);
         this.workers = updatedPosts;
@@ -58,7 +61,7 @@ export class WorkerService {
   }
 
   addWorker(worker: ShiftWorker) {
-    this.http.post<{ message: string, workerId: string }>('http://localhost:3000/api/workers', worker)
+    this.http.post<{ message: string, workerId: string }>(BACKEND_URL, worker)
       .subscribe(responseData => {
         const id = responseData.workerId;
         worker.id = id;
@@ -71,7 +74,7 @@ export class WorkerService {
 
   editWorker(row: ShiftWorker) {
     console.log('efit')
-    this.http.put('http://localhost:3000/api/workers/' + row.id, row)
+    this.http.put(BACKEND_URL + row.id, row)
       .subscribe(response => console.log(response));
   }
 }
