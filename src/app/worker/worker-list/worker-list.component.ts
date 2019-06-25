@@ -4,17 +4,13 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatTable} from "@angular/mater
 import {WorkerEditComponent} from "../worker-edit/worker-edit.component";
 import {Observable, Subscription} from "rxjs";
 import {WorkerService} from "../worker.service";
-import {DataSource} from "@angular/cdk/table";
-import {User, UserService} from "../../services/user.service";
 import {WorkerShiftListComponent} from "../worker-shift-list/worker-shift-list.component";
-
 
 @Component({
   selector: 'app-worker-list',
   templateUrl: './worker-list.component.html',
   styleUrls: ['./worker-list.component.sass']
 })
-
 
 export class WorkerListComponent implements OnInit {
   // @ts-ignore
@@ -59,7 +55,6 @@ export class WorkerListComponent implements OnInit {
     this.workerSrevice.deleteWorker(element)
   }
 
-
   openShifts(element: ShiftWorker) {
     this.workerSrevice.getShiftsForWorker(element.id).subscribe(shifts => {
       const dialogRef = this.dialog.open(WorkerShiftListComponent, {
@@ -70,7 +65,6 @@ export class WorkerListComponent implements OnInit {
         this.workerSrevice.addOrUdateShifts(element.id, result.shifts);
       });
     })
-
   }
 }
 

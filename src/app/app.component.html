@@ -1,13 +1,14 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand">Lifen</a>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto" routerLinkActive="active">
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="workers">Home <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
+<mat-toolbar color="primary">
+  <span>
+    <a routerLink="/">Planning de garde</a>
+  </span>
+  <span class="spacer"></span>
+  <ul>
+    <li>
+      <a mat-button routerLink="/workers" routerLinkActive="mat-accent">Workers</a>
+      <a mat-button routerLink="/shifts" routerLinkActive="mat-accent">Shifts</a>
+    </li>
+  </ul>
+</mat-toolbar>
 
 <router-outlet></router-outlet>

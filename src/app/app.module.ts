@@ -12,12 +12,14 @@ import {WorkerService} from "./worker/worker.service";
 import {UserService} from "./services/user.service";
 import {HttpClientModule} from "@angular/common/http";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import { ShiftListComponent } from './shift/shift-list/shift-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    NavigationComponent
+    NavigationComponent,
+    ShiftListComponent
   ],
   imports: [
     HttpClientModule,
