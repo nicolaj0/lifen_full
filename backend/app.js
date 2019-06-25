@@ -11,6 +11,7 @@ const bp = require('body-parser')
 const Worker = require('./models/worker')
 const Shift = require('./models/shift')
 const workersRoutes = require("./routes/workers");
+const shiftsRoutes = require("./routes/shifts");
 
 app.use(bp.json())
 app.use((req, res, next) => {
@@ -27,4 +28,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/workers", workersRoutes);
+app.use("/api/shifts", shiftsRoutes);
+
 module.exports = app;
