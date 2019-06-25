@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {Status} from "./status";
 import {environment} from "../../environments/environment";
+import {Shift} from "../shift/shift";
 
 const BACKEND_URL = environment.apiUrl + "/workers/";
 
@@ -76,6 +77,19 @@ export class WorkerService {
     console.log('efit')
     this.http.put(BACKEND_URL + row.id, row)
       .subscribe(response => console.log(response));
+  }
+
+  addOrUdateShifts(workerId: string, shifts: Shift[]) {
+    this.http.post<any>(BACKEND_URL + "shifts",shifts[0])
+      .subscribe(responseData => {
+       console.log(responseData)
+      });
+
+
+  }
+
+  getShiftsForWorker(workerId: string) {
+    return this.http.get<any>(BACKEND_URL  + workerId + "/shifts")
   }
 }
 

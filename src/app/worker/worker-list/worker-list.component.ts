@@ -6,6 +6,7 @@ import {Observable, Subscription} from "rxjs";
 import {WorkerService} from "../worker.service";
 import {DataSource} from "@angular/cdk/table";
 import {User, UserService} from "../../services/user.service";
+import {WorkerShiftListComponent} from "../worker-shift-list/worker-shift-list.component";
 
 
 @Component({
@@ -47,7 +48,7 @@ export class WorkerListComponent implements OnInit {
   addWorker(): void {
     const dialogRef = this.dialog.open(WorkerEditComponent, {
       width: '250px',
-      data : {}
+      data: {}
     });
     dialogRef.afterClosed().subscribe(result => {
       this.workerSrevice.addWorker(result);
@@ -59,6 +60,18 @@ export class WorkerListComponent implements OnInit {
   }
 
 
+  openShifts(element: ShiftWorker) {
+    this.workerSrevice.getShiftsForWorker(element.id).subscribe(shifts => {
+      const dialogRef = this.dialog.open(WorkerShiftListComponent, {
+        width: '250px',
+        data: {shifts: shifts, worker: element}
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        this.workerSrevice.addOrUdateShifts(element.id, result.shifts);
+      });
+    })
+
+  }
 }
 
 

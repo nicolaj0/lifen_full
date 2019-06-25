@@ -9,6 +9,7 @@ mongoose.connect("mongodb+srv://julien:" +
 
 const bp = require('body-parser')
 const Worker = require('./models/worker')
+const Shift = require('./models/shift')
 
 app.use(bp.json())
 app.use((req, res, next) => {
@@ -55,11 +56,35 @@ app.delete("/api/workers/:id", (req, res, next) => {
   })
 })
 
+app.post("/api/workers/shifts", (req, res, next) => {
+  const shift = new Shift({start_date: req.body.start_date, user_id: req.body.user_id})
+  shift.save().then(createdShift => {
+    res.status(201).json({
+      message: "Worker added successfully",
+      shiftId: createdShift._id
+    });
+  });
+});
+
+app.use("/api/workers/:id/shifts", (req, res, next) => {
+  console.log('eee')
+  Shift.find({
+    'user_id': {
+      $in: [
+        mongoose.Types.ObjectId(req.params.id),
+      ]
+    }
+  }).then(docu => {
+    res.status(200).json(docu);
+  })
+});
+
 app.use("/api/workers", (req, res, next) => {
   console.log('eee')
   Worker.find().then(docu => {
     res.status(200).json(docu);
   })
 });
+
 
 module.exports = app;
