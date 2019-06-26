@@ -20,6 +20,10 @@ export class Shiftservice {
 
   addShift(shift: any) {
     return this.http.post<{ message: string, shiftId: string }>(BACKEND_URL, shift)
+  }
+
+  update(shift: any) {
+    return this.http.put<{ message: string }>(BACKEND_URL + shift._id, shift)
 
   }
 }

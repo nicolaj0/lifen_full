@@ -32,16 +32,6 @@ export class WorkerService {
 
   getWorkers() {
     this.http.get<any>(BACKEND_URL)
-      .pipe(map((woData) => {
-        return woData.map(w => {
-          return {
-            first_name: w.first_name,
-            status: w.status,
-            id: w._id,
-            shifts: w.shifts
-          }
-        })
-      }))
       .subscribe(transformedPosts => {
         this.workers = transformedPosts;
         this.workersUpdated.next([...this.workers]);
@@ -56,7 +46,7 @@ export class WorkerService {
   deleteWorker(workerId: string) {
     this.http.delete(BACKEND_URL + workerId)
       .subscribe(() => {
-        const updatedPosts = this.workers.filter(worker => worker.id !== workerId);
+        const updatedPosts = this.workers.filter(worker => worker._id !== workerId);
         this.workers = updatedPosts;
         this.workersUpdated.next([...this.workers]);
       });
@@ -66,7 +56,7 @@ export class WorkerService {
     this.http.post<{ message: string, workerId: string }>(BACKEND_URL, worker)
       .subscribe(responseData => {
         const id = responseData.workerId;
-        worker.id = id;
+        worker._id = id;
         this.workers.push(worker);
         this.workersUpdated.next([...this.workers]);
       });
@@ -76,14 +66,10 @@ export class WorkerService {
 
   editWorker(row: ShiftWorker) {
     console.log('efit')
-    this.http.put(BACKEND_URL + row.id, row)
+    this.http.put(BACKEND_URL + row._id, row)
       .subscribe(response => console.log(response));
   }
 
-  addOrUdateShifts(workerId: string, shifts: string[]) {
-    return this.http.post<any>(BACKEND_URL + workerId + "/shifts", shifts)
-
-  }
 
   getShiftsForWorker(workerId: string) {
     return this.http.get<any>(BACKEND_URL + workerId + "/shifts")

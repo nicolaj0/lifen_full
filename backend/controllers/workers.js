@@ -21,7 +21,7 @@ exports.createWorker = (req, res, next) => {
 exports.putWorker = (req, res, next) => {
   const worker = new Worker(
     {
-      _id: req.body.id,
+      _id: req.body._id,
       first_name: req.body.first_name,
       status: req.body.status
     })

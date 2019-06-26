@@ -2,10 +2,11 @@ import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {ShiftWorker} from "../worker";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatTable} from "@angular/material";
 import {WorkerEditComponent} from "../worker-edit/worker-edit.component";
-import {Observable, Subscription} from "rxjs";
+import {forkJoin, Observable, Subscription} from "rxjs";
 import {WorkerService} from "../worker.service";
 import {WorkerShiftListComponent} from "../worker-shift-list/worker-shift-list.component";
 import {ShiftSelectComponent} from "../../shift/shift-select/shift-select.component";
+import {Shiftservice} from "../../shift/shift.service";
 
 @Component({
   selector: 'app-worker-list',
@@ -20,7 +21,8 @@ export class WorkerListComponent implements OnInit {
   displayedColumns: string[] = ['first_name', 'status', 'actions'];
   private workersSub: Subscription;
 
-  constructor(public dialog: MatDialog, private workerSrevice: WorkerService) {
+  constructor(public dialog: MatDialog, private workerSrevice: WorkerService,
+              private shiftrevice: Shiftservice) {
   }
 
   ngOnInit() {
@@ -60,16 +62,21 @@ export class WorkerListComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ShiftSelectComponent, {
       width: '250px',
-      data: {shifts: element.shifts}
+      data: {worker : element._id,shifts: element.shifts || []}
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.workerSrevice.addOrUdateShifts(element.id, result.shifts
-        .filter(f => f.checked)
-        .map(f => f._id)).subscribe(d=>{
-          this.ngOnInit()
-          //element.shifts = result
-      });
-    });
+      var shiftToassign = result.shifts
+        .filter(f => f.checked && !f.worker)
+        .map(s => this.shiftrevice.update({_id: s._id, user_id: element._id}));
+
+      var shiftToUnassign = result.shifts
+        .filter(f => !f.checked && f.worker)
+        .map(s => this.shiftrevice.update({_id: s._id, user_id: undefined}));
+
+      forkJoin([...shiftToassign, ...shiftToUnassign]).subscribe(results => {
+        console.log(results)
+      })
+    })
   }
 }
 
