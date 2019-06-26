@@ -65,7 +65,10 @@ export class WorkerListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.workerSrevice.addOrUdateShifts(element.id, result.shifts
         .filter(f => f.checked)
-        .map(f => f._id));
+        .map(f => f._id)).subscribe(d=>{
+          this.ngOnInit()
+          //element.shifts = result
+      });
     });
   }
 }

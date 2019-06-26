@@ -43,9 +43,10 @@ exports.postShiftsForWorker = (req, res, next) => {
 
 
   Worker.findOneAndUpdate({_id: req.params.id}, {$push: {shifts: req.body}})
-  .then(createdShift => {
+  .then(createdShifts => {
     res.status(201).json({
       message: "shifts added successfully",
+      worker : createdShifts
     });
   });
 }

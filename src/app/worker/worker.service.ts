@@ -26,8 +26,8 @@ export class WorkerService {
     ];
   }
 
-  getStatuseText(val: number): string{
-    return this.getStatuses().find(f=>f.key == val).viewValue
+  getStatuseText(val: number): string {
+    return this.getStatuses().find(f => f.key == val).viewValue
   }
 
   getWorkers() {
@@ -38,7 +38,7 @@ export class WorkerService {
             first_name: w.first_name,
             status: w.status,
             id: w._id,
-            shifts : w.shifts
+            shifts: w.shifts
           }
         })
       }))
@@ -81,14 +81,12 @@ export class WorkerService {
   }
 
   addOrUdateShifts(workerId: string, shifts: string[]) {
-    this.http.post<any>(BACKEND_URL + workerId + "/shifts",shifts)
-      .subscribe(responseData => {
-       console.log(responseData)
-      });
+    return this.http.post<any>(BACKEND_URL + workerId + "/shifts", shifts)
+
   }
 
   getShiftsForWorker(workerId: string) {
-    return this.http.get<any>(BACKEND_URL  + workerId + "/shifts")
+    return this.http.get<any>(BACKEND_URL + workerId + "/shifts")
   }
 }
 
