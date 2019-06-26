@@ -1,0 +1,43 @@
+<h1 mat-dialog-title> choose shifts</h1>
+<div mat-dialog-content>
+  <div class="example-container mat-elevation-z8">
+    <div class="example-header">
+      <button mat-button (click)="addShift()">Add shift</button>
+    </div>
+    <table
+      mat-table [dataSource]="dataSource"
+      class="mat-elevation-z8">
+
+      &lt;!&ndash; Name Column &ndash;&gt;
+      <ng-container matColumnDef="start_date">
+        <th mat-header-cell *matHeaderCellDef> Name</th>
+        <td mat-cell *matCellDef="let element"> {{element.start_date | date}} </td>
+      </ng-container>
+
+      &lt;!&ndash; Status Column &ndash;&gt;
+      <ng-container matColumnDef="user_id">
+        <th mat-header-cell *matHeaderCellDef> Status</th>
+        <td mat-cell *matCellDef="let element"> {{element.user_id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button (click)="removeShift(element.id)">Remove from shift</button>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: displayedColumns;"
+
+      ></tr>
+    </table>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>
+
