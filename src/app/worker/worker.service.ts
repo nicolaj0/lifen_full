@@ -37,7 +37,8 @@ export class WorkerService {
           return {
             first_name: w.first_name,
             status: w.status,
-            id: w._id
+            id: w._id,
+            shifts : w.shifts
           }
         })
       }))
@@ -79,13 +80,11 @@ export class WorkerService {
       .subscribe(response => console.log(response));
   }
 
-  addOrUdateShifts(workerId: string, shifts: Shift[]) {
-    this.http.post<any>(BACKEND_URL + "shifts",shifts[0])
+  addOrUdateShifts(workerId: string, shifts: string[]) {
+    this.http.post<any>(BACKEND_URL + workerId + "/shifts",shifts)
       .subscribe(responseData => {
        console.log(responseData)
       });
-
-
   }
 
   getShiftsForWorker(workerId: string) {

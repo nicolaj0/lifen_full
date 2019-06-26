@@ -5,6 +5,7 @@ import {WorkerEditComponent} from "../worker-edit/worker-edit.component";
 import {Observable, Subscription} from "rxjs";
 import {WorkerService} from "../worker.service";
 import {WorkerShiftListComponent} from "../worker-shift-list/worker-shift-list.component";
+import {ShiftSelectComponent} from "../../shift/shift-select/shift-select.component";
 
 @Component({
   selector: 'app-worker-list',
@@ -56,15 +57,16 @@ export class WorkerListComponent implements OnInit {
   }
 
   openShifts(element: ShiftWorker) {
-    this.workerSrevice.getShiftsForWorker(element.id).subscribe(shifts => {
-      const dialogRef = this.dialog.open(WorkerShiftListComponent, {
-        width: '250px',
-        data: {shifts: shifts, worker: element}
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        this.workerSrevice.addOrUdateShifts(element.id, result.shifts);
-      });
-    })
+
+    const dialogRef = this.dialog.open(ShiftSelectComponent, {
+      width: '250px',
+      data: {shifts: element.shifts}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.workerSrevice.addOrUdateShifts(element.id, result.shifts
+        .filter(f => f.checked)
+        .map(f => f._id));
+    });
   }
 }
 

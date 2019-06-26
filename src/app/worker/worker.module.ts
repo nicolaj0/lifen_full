@@ -5,10 +5,9 @@ import {WorkerEditComponent} from './worker-edit/worker-edit.component';
 import {SharedModule} from "../shared/shared.module";
 import {FormsModule} from "@angular/forms";
 import {WorkerShiftListComponent} from './worker-shift-list/worker-shift-list.component';
-import {WorkerShiftEditComponent} from './worker-shift-edit/worker-shift-edit.component';
 
 @NgModule({
-  declarations: [WorkerListComponent, WorkerEditComponent, WorkerShiftListComponent, WorkerShiftEditComponent],
+  declarations: [WorkerListComponent, WorkerEditComponent, WorkerShiftListComponent],
   imports: [
     CommonModule,
     SharedModule,

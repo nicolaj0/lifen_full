@@ -3,8 +3,7 @@ const Shift = require('../models/shift')
 const mongoose = require('mongoose')
 
 exports.getWorkers = (req, res, next) => {
-  console.log('eee')
-  Worker.find().then(docu => {
+  Worker.find().populate('shifts').then(docu => {
     res.status(200).json(docu);
   })
 }
@@ -41,11 +40,12 @@ exports.deleteWorker = (req, res, next) => {
 }
 
 exports.postShiftsForWorker = (req, res, next) => {
-  const shift = new Shift({start_date: req.body.start_date, user_id: req.body.user_id})
-  shift.save().then(createdShift => {
+
+
+  Worker.findOneAndUpdate({_id: req.params.id}, {$push: {shifts: req.body}})
+  .then(createdShift => {
     res.status(201).json({
-      message: "Worker added successfully",
-      shiftId: createdShift._id
+      message: "shifts added successfully",
     });
   });
 }

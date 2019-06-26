@@ -13,13 +13,18 @@ import {UserService} from "./services/user.service";
 import {HttpClientModule} from "@angular/common/http";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import { ShiftListComponent } from './shift/shift-list/shift-list.component';
+import {ShiftEditComponent} from "./shift/shit-edit/shit-edit.component";
+import {FormsModule} from "@angular/forms";
+import { ShiftSelectComponent } from './shift/shift-select/shift-select.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
     NavigationComponent,
-    ShiftListComponent
+    ShiftListComponent,
+    ShiftEditComponent,
+    ShiftSelectComponent
   ],
   imports: [
     HttpClientModule,
@@ -28,7 +33,8 @@ import { ShiftListComponent } from './shift/shift-list/shift-list.component';
     AppRoutingModule,
     WorkerModule,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   providers: [WorkerService, UserService],
   bootstrap: [AppComponent]
