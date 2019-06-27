@@ -21,7 +21,7 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions</th>
       <td mat-cell *matCellDef="let element">
-        <button mat-button (click)="deleteShift(element.id)">Delete </button>
+        <button mat-button [disabled]="isPast(element.start_date)" (click)="deleteShift(element.id)">Delete </button>
         <button mat-button (click)="assign(element)">Assign</button>
       </td>
     </ng-container>

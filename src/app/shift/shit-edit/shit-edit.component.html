@@ -1,12 +1,25 @@
-<h1 mat-dialog-title>{{data.user_id}}</h1>
+<h1 mat-dialog-title>{{data.shiftToAdd.user_id}}</h1>
 <div mat-dialog-content>
 
-  <mat-form-field>
-    <input matInput [(ngModel)]="data.start_date" [matDatepicker]="picker" placeholder="Choose a date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+  <form [formGroup]="shiftForm" novalidate>
+    <mat-form-field>
+      <input
+        formControlName="start_date"
+        matInput
+        [(ngModel)]="data.shiftToAdd.start_date"
+        [matDatepicker]="picker"
+        [matDatepickerFilter]="dateFilter"
+        placeholder="Choose a date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button
+    mat-button
+    [disabled]="!shiftForm.valid"
+
+    [mat-dialog-close]="data.shiftToAdd"
+    cdkFocusInitial>Ok</button>
 </div>

@@ -14,7 +14,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import { ShiftListComponent } from './shift/shift-list/shift-list.component';
 import {ShiftEditComponent} from "./shift/shit-edit/shit-edit.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ShiftSelectComponent } from './shift/shift-select/shift-select.component';
 
 @NgModule({
@@ -34,7 +34,8 @@ import { ShiftSelectComponent } from './shift/shift-select/shift-select.componen
     WorkerModule,
     BrowserAnimationsModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [WorkerService, UserService],
   bootstrap: [AppComponent]

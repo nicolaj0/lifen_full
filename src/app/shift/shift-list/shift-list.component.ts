@@ -18,19 +18,22 @@ export class ShiftListComponent implements OnInit {
   private shiftsSub: Subscription;
   displayedColumns: string[] = ['start_date', 'user', 'actions'];
 
+
   constructor(public dialog: MatDialog, private shiftService: Shiftservice) { }
 
   ngOnInit() {
     this.shiftsSub = this.shiftService.getShifts()
       .subscribe((shifts: Shift[]) => {
-        this.dataSource = shifts;
+        this.dataSource = shifts.sort((a,b)=> {
+          if (a.start_date > b.start_date) return 1;
+          if (a.start_date < b.start_date) return -1;});
       });
   }
 
   addShift() {
     const dialogRef = this.dialog.open(ShiftEditComponent, {
       width: '250px',
-      data: {}
+      data: {shifts : this.dataSource, shiftToAdd : {}}
     });
     dialogRef.afterClosed().subscribe(result => {
       this.shiftService.addShift(result).subscribe(f=> this.ngOnInit());
@@ -47,12 +50,23 @@ export class ShiftListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log(result)
-      result.shift.user_id = result.worker._id
+      if (result.worker.checked){
+        result.shift.user_id = result.worker._id
+      }
+      else{
+        result.shift.user_id = null
+      }
       this.shiftService.update(result.shift).subscribe(res=> {
-        element.worker = result.worker;
+        this.ngOnInit()
 
       });
     });
 
+  }
+
+  isPast(start_date: Date): boolean {
+    let today = new Date();
+    today.setDate(today.getDate()-1);
+    return (today.toISOString()>start_date.toString())
   }
 }
