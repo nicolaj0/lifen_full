@@ -7,6 +7,7 @@ import {WorkerShiftListComponent} from "./worker/worker-shift-list/worker-shift-
 import {ShiftListComponent} from "./shift/shift-list/shift-list.component";
 import {ShiftEditComponent} from "./shift/shit-edit/shit-edit.component";
 import {ShiftSelectComponent} from "./shift/shift-select/shift-select.component";
+import {WorkerAssignComponent} from "./worker/worker-assign/worker-assign.component";
 
 const routes: Routes = [
   {path: 'worker/:id', component: WorkerEditComponent},
@@ -29,6 +30,11 @@ const routes: Routes = [
   {
     path: 'shifts/select',
     component: ShiftSelectComponent,
+    data: {title: 'Shift'}
+  },
+  {
+    path: 'worker/assign',
+    component: WorkerAssignComponent,
     data: {title: 'Shift'}
   },
   {

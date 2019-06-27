@@ -30,6 +30,10 @@ export class WorkerService {
     return this.getStatuses().find(f => f.key == val).viewValue
   }
 
+  getWorkersForAssign(){
+    return  this.http.get<any>(BACKEND_URL);
+  }
+
   getWorkers() {
     this.http.get<any>(BACKEND_URL)
       .subscribe(transformedPosts => {

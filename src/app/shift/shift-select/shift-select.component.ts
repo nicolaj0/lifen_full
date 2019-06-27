@@ -34,11 +34,10 @@ export class ShiftSelectComponent implements OnInit {
       .subscribe((shifts: Shift[]) => {
 
           shifts.forEach(s => {
-              if (s.worker && s.worker._id === this.data.worker) {
-                s.checked = true;
-              }
+            if (s.worker && s.worker._id === this.data.worker) {
+              s.checked = true;
             }
-          )
+          })
 
           this.dataSource = shifts;
           this.data.shifts = this.dataSource;
