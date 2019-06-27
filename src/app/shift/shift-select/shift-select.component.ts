@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material";
 import {Shiftservice} from "../shift.service";
 import {ShiftWorker} from "../../worker/worker";
+import {MatCheckboxChange} from "@angular/material/typings/esm5/checkbox";
 
 @Component({
   selector: 'app-shift-select',
@@ -34,14 +35,18 @@ export class ShiftSelectComponent implements OnInit {
       .subscribe((shifts: Shift[]) => {
 
           shifts.forEach(s => {
-            if (s.worker && s.worker._id === this.data.worker) {
-              s.checked = true;
-            }
-          })
+          if (s.worker && s.worker._id === this.data.worker) {
+            s.checked = true;
+          }
+        })
 
           this.dataSource = shifts;
           this.data.shifts = this.dataSource;
         }
       );
+  }
+
+  onWroker($event: MatCheckboxChange) {
+    console.log($event)
   }
 }

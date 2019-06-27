@@ -43,10 +43,15 @@ export class ShiftListComponent implements OnInit {
   assign(element: Shift) {
     const dialogRef = this.dialog.open(WorkerAssignComponent, {
       width: '250px',
-      data: {shift : element}
+      data: {shift : element, worker : {}}
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.shiftService.update(result).subscribe(res=> console.log(res));
+      console.log(result)
+      result.shift.user_id = result.worker._id
+      this.shiftService.update(result.shift).subscribe(res=> {
+        element.worker = result.worker;
+
+      });
     });
 
   }
